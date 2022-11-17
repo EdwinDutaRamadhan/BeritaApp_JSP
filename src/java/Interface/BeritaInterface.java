@@ -16,4 +16,5 @@ public interface BeritaInterface {
     public boolean insertOne(BeritaModel model);
     public boolean deleteOne(BeritaModel model);
     public boolean updateOne(BeritaModel model);
+    public List<BeritaModel> sortOne(String orderBy);
 }

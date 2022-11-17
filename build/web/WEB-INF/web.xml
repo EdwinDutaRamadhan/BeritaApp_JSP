@@ -8,6 +8,10 @@
         <servlet-name>BeritaService</servlet-name>
         <servlet-class>Service.BeritaService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SortService</servlet-name>
+        <servlet-class>Service.SortService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserService</servlet-name>
         <url-pattern>/UserService</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>BeritaService</servlet-name>
         <url-pattern>/BeritaService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SortService</servlet-name>
+        <url-pattern>/SortService</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

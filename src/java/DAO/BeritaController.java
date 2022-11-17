@@ -57,7 +57,7 @@ public class BeritaController implements BeritaInterface {
     @Override
     public boolean insertOne(BeritaModel model) {
         boolean result = false;
-        
+
         try {
             PreparedStatement ps = koneksi.prepareStatement("INSERT INTO tb_berita VALUES(?,?,?,?,?,?,?)");
             ps.setString(1, null);
@@ -68,18 +68,18 @@ public class BeritaController implements BeritaInterface {
             ps.setString(6, model.getCreated_at());
             ps.setString(7, model.getUpdated_at());
             ps.executeUpdate();
-            result=true;
+            result = true;
         } catch (SQLException ex) {
             Logger.getLogger(BeritaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return result;
     }
 
     @Override
     public boolean deleteOne(BeritaModel model) {
         boolean result = false;
-        
+
         try {
             PreparedStatement ps = koneksi.prepareStatement("DELETE FROM tb_berita WHERE id=?");
             ps.setString(1, model.getId());
@@ -88,14 +88,14 @@ public class BeritaController implements BeritaInterface {
         } catch (SQLException ex) {
             Logger.getLogger(BeritaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return result;
     }
 
     @Override
     public boolean updateOne(BeritaModel model) {
         boolean result = false;
-        
+
         try {
             PreparedStatement ps = koneksi.prepareStatement("UPDATE tb_berita SET judul=?, penulis=?, tanggal=?, isi=?, created_at=?, updated_at=? WHERE id=?");
             ps.setString(7, model.getId());
@@ -110,8 +110,61 @@ public class BeritaController implements BeritaInterface {
         } catch (SQLException ex) {
             Logger.getLogger(BeritaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return result;
+    }
+
+    @Override
+    public List<BeritaModel> sortOne(String orderBy) {
+        List<BeritaModel> listBerita = new ArrayList<BeritaModel>();
+        String sql = "SELECT * FROM tb_berita";
+        switch (orderBy) {
+            case "create-desc":
+                sql = "SELECT * FROM tb_berita ORDER BY created_at DESC";
+                break;
+            case "create-asc":
+                sql = "SELECT * FROM tb_berita ORDER BY created_at ASC";
+                break;
+            case "update-desc":
+                sql = "SELECT * FROM tb_berita ORDER BY updated_at DESC";
+                break;
+            case "update-asc":
+                sql = "SELECT * FROM tb_berita ORDER BY updated_at ASC";
+                break;
+            case "judul-desc":
+                sql = "SELECT * FROM tb_berita ORDER BY judul DESC";
+                break;
+            case "judul-asc":
+                sql = "SELECT * FROM tb_berita ORDER BY judul ASC";
+                break;
+            case "penulis-desc":
+                sql = "SELECT * FROM tb_berita ORDER BY penulis DESC";
+                break;
+            case "penulis-asc":
+                sql = "SELECT * FROM tb_berita ORDER BY penulis ASC";
+                break;
+            default:
+                throw new AssertionError();
+        }
+        try {
+            PreparedStatement ps = koneksi.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                model = new BeritaModel();
+                model.setId(rs.getString(1));
+                model.setJudul(rs.getString(2));
+                model.setPenulis(rs.getString(3));
+                model.setTanggal(rs.getString(4));
+                model.setIsi(rs.getString(5));
+                model.setUpdated_at(rs.getString(6));
+                model.setCreated_at(rs.getString(7));
+                listBerita.add(model);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(BeritaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listBerita;
     }
 
 }
